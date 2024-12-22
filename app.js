@@ -11,7 +11,7 @@ client.on('qr', async (qr) => {
         // Convertir el código QR a una imagen base64 sin márgenes
         const qrcodeData = await qrcode.toDataURL(qr, { margin: 1 });
 
-        // Enviar el código QR al servidor Flask
+        // Enviar el código QR al servidor Flask o cualquier otro servidor para ser escaneado
         await axios.post('http://127.0.0.1:5000/api/qrcode', { qrcode: qrcodeData });
 
         console.log('QR enviado a Flask correctamente');
@@ -30,7 +30,7 @@ client.on('message', async (message) => {
     // Capturar el número del usuario
     const userId = message.from.split('@')[0]; // Número de teléfono sin el dominio '@c.us'
 
-    // Enviar la pregunta a la API Flask
+    // Enviar la pregunta a la API Flask o cualquier otro servicio para procesamiento
     try {
         const response = await axios.post('http://127.0.0.1:5000/api/chat', {
             pregunta: message.body,
