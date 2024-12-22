@@ -2,8 +2,6 @@ const { Client } = require('whatsapp-web.js');
 const qrcode = require('qrcode');
 const axios = require('axios');
 const puppeteer = require('puppeteer'); // Importamos Puppeteer
-const path = require('path');
-
 // Inicializar cliente de WhatsApp
 const client = new Client();
 
