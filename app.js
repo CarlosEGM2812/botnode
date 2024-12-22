@@ -50,12 +50,11 @@ client.on('message', async (message) => {
 (async () => {
     try {
         const browser = await puppeteer.launch({
-            headless: true, // Cambiado a true para evitar la interfaz gráfica
-            args: ['--no-sandbox', '--disable-setuid-sandbox'], // Configuración de Puppeteer para evitar errores de sandboxing
+            headless: true, // Modo headless
+            args: ['--no-sandbox', '--disable-setuid-sandbox'] // Opciones para evitar errores de sandbox
         });
         
-        // Aquí puedes manejar las instancias de puppeteer si es necesario
-        
+        console.log('Navegador Puppeteer inicializado con éxito');
     } catch (error) {
         console.error('Error al inicializar Puppeteer:', error);
     }
