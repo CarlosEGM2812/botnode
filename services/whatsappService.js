@@ -11,7 +11,7 @@ class WhatsAppService {
     async init() {
         this.client.on('qr', async (qr) => {
             const qrcodeData = await qrcode.toDataURL(qr, { margin: 1 });
-            await axios.post('http://127.0.0.1:5000/api/qrcode', { qrcode: qrcodeData });
+            await axios.post('https://botwhatsappgit-production.up.railway.app//api/qrcode', { qrcode: qrcodeData });
             console.log('QR enviado a Flask correctamente');
         });
 
@@ -24,7 +24,7 @@ class WhatsAppService {
             const userId = message.from.split('@')[0];
 
             try {
-                const response = await axios.post('http://127.0.0.1:5000/api/chat', {
+                const response = await axios.post('https://botwhatsappgit-production.up.railway.app//api/chat', {
                     pregunta: message.body,
                     user_id: userId,
                 });
