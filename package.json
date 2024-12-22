@@ -1,23 +1,25 @@
 {
-    "name": "nodejs-app",
-    "version": "1.0.0",
-    "description": "A minimal Node.js web application.",
-    "main": "app.js",
-    "author": "alphasec",
-    "license": "MIT",
-    "scripts": {
-      "start": "node app.js"
-    },
-    "dependencies": {
-      "axios": "^1.7.9",
-      "qrcode": "^1.5.4",
-      "puppeteer-core": "^19.7.0",
-      "whatsapp-web.js": "^1.26.0",
-      "path": "^0.12.7"
-    },
-    "nixpacks": {
-      "config": {
-        "args": ["--no-sandbox", "--disable-setuid-sandbox"]
-      }
+  "name": "nodejs-app",
+  "version": "1.0.0",
+  "description": "A minimal Node.js web application.",
+  "main": "app.js",
+  "author": "alphasec",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.20.2"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "qrcode": "^1.5.4",
+    "puppeteer-core": "latest",
+    "whatsapp-web.js": "^1.26.0"
+  },
+  "nixpacks": {
+    "config": {
+      "args": ["--no-sandbox", "--disable-setuid-sandbox"]
     }
   }
+}
