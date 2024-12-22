@@ -5,21 +5,21 @@
   "main": "app.js",
   "author": "alphasec",
   "license": "MIT",
-  "engines": {
-    "node": ">=18.20.2"
-  },
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "postinstall": "npm audit fix --force"
   },
   "dependencies": {
     "axios": "^1.7.9",
     "qrcode": "^1.5.4",
-    "puppeteer-core": "latest",
-    "whatsapp-web.js": "^1.26.0"
+    "puppeteer-core": "^22.8.2",
+    "whatsapp-web.js": "^1.26.0",
+    "path": "^0.12.7",
+    "rimraf": "^4.0.1"
   },
   "nixpacks": {
     "config": {
-      "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+      "args": ["--omit=dev", "--no-sandbox", "--disable-setuid-sandbox"]
     }
   }
 }
