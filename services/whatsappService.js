@@ -10,9 +10,13 @@ class WhatsAppService {
 
     async init() {
         this.client.on('qr', async (qr) => {
-            const qrcodeData = await qrcode.toDataURL(qr, { margin: 1 });
-            await axios.post('https://botwhatsappgit-production.up.railway.app//api/qrcode', { qrcode: qrcodeData });
-            console.log('QR enviado a Flask correctamente');
+            try {
+                const qrcodeData = await qrcode.toDataURL(qr, { margin: 1 });
+                await axios.post('https://botwhatsappgit-production.up.railway.app/api/qrcode', { qrcode: qrcodeData });
+                console.log('QR enviado a Flask correctamente');
+            } catch (error) {
+                console.error('Error al enviar el código QR a Flask:', error);
+            }
         });
 
         this.client.on('ready', () => {
@@ -21,10 +25,10 @@ class WhatsAppService {
 
         this.client.on('message', async (message) => {
             console.log(`Mensaje recibido: ${message.body}`);
-            const userId = message.from.split('@')[0];
+            const userId = message.from.split('@')[0]; // Extraer el número del usuario
 
             try {
-                const response = await axios.post('https://botwhatsappgit-production.up.railway.app//api/chat', {
+                const response = await axios.post('https://botwhatsappgit-production.up.railway.app/api/chat', {
                     pregunta: message.body,
                     user_id: userId,
                 });
@@ -40,8 +44,8 @@ class WhatsAppService {
     }
 
     async sendMessage(userId, message) {
-        const user = this.client.getChatById(userId); // Para obtener el usuario
-        return user.sendMessage(message);
+        const user = await this.client.getChatById(userId); // Obtener el chat del usuario
+        return user.sendMessage(message); // Enviar el mensaje
     }
 }
 
