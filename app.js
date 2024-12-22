@@ -2,6 +2,7 @@ const { Client } = require('whatsapp-web.js');
 const qrcode = require('qrcode');
 const axios = require('axios');
 const puppeteer = require('puppeteer'); // Importamos Puppeteer
+
 // Inicializar cliente de WhatsApp
 const client = new Client();
 
@@ -46,13 +47,13 @@ client.on('message', async (message) => {
 
 // Inicialización de Puppeteer para manejar el proceso del navegador
 (async () => {
-  const browser = await puppeteer.launch({
-    headless: true,  // Si deseas que el navegador esté en modo cabeza cerrada
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],  // Añade estos argumentos
-  });
+    const browser = await puppeteer.launch({
+        headless: true,  // Si deseas que el navegador esté en modo cabeza cerrada
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],  // Añade estos argumentos
+    });
 
-  const page = await browser.newPage();
-  // El resto de tu código para interactuar con Puppeteer
+    const page = await browser.newPage();
+    // El resto de tu código para interactuar con Puppeteer
 })();
 
 // Inicializar cliente de WhatsApp
