@@ -1,64 +1,20 @@
-const { Client } = require('whatsapp-web.js');
-const qrcode = require('qrcode');
-const axios = require('axios');
-const puppeteer = require('puppeteer'); // Importamos Puppeteer
-// Inicializar cliente de WhatsApp
-const client = new Client();
+const express = require('express');
+const app = express();
+const port = 3000;
 
-client.on('qr', async (qr) => {
-    try {
-        // Convertir el código QR a una imagen base64 sin márgenes
-        const qrcodeData = await qrcode.toDataURL(qr, { margin: 1 });
+// Rutas
+const whatsappRoutes = require('./routes/whatsappRoutes');
+const puppeteerRoutes = require('./routes/puppeteerRoutes');
 
-        // Enviar el código QR al servidor Flask
-        await axios.post('http://127.0.0.1:5000/api/qrcode', { qrcode: qrcodeData });
+// Middleware
+app.use(express.json());
 
-        console.log('QR enviado a Flask correctamente');
-    } catch (error) {
-        console.error('Error al enviar el código QR a Flask:', error);
-    }
+// Rutas de WhatsApp
+app.use('/api/whatsapp', whatsappRoutes);
+
+// Rutas de Puppeteer
+app.use('/api/puppeteer', puppeteerRoutes);
+
+app.listen(port, () => {
+    console.log(`App listening on http://localhost:${port}`);
 });
-
-client.on('ready', () => {
-    console.log('Cliente de WhatsApp está listo.');
-});
-
-client.on('message', async (message) => {
-    console.log(`Mensaje recibido: ${message.body}`);
-
-    // Capturar el número del usuario
-    const userId = message.from.split('@')[0]; // Número de teléfono sin el dominio '@c.us'
-
-    // Enviar la pregunta a la API Flask
-    try {
-        const response = await axios.post('http://127.0.0.1:5000/api/chat', {
-            pregunta: message.body,
-            user_id: userId,
-        });
-
-        const respuesta = response.data.respuesta || 'No se pudo procesar tu solicitud.';
-        message.reply(respuesta);
-    } catch (error) {
-        console.error('Error al procesar la solicitud:', error);
-        message.reply('Hubo un error al procesar tu mensaje. Inténtalo nuevamente más tarde.');
-    }
-});
-
-// Condicional para ejecutar Puppeteer solo si es necesario
-const usePuppeteer = process.env.PUPPETEER === 'true'; // Controla el uso de Puppeteer
-
-if (usePuppeteer) {
-    // Inicialización de Puppeteer para manejar el proceso del navegador
-    (async () => {
-        const browser = await puppeteer.launch({
-            headless: true,  // Si deseas que el navegador esté en modo cabeza cerrada
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],  // Añade estos argumentos
-        });
-
-        const page = await browser.newPage();
-        // El resto de tu código para interactuar con Puppeteer
-    })();
-}
-
-// Inicializar cliente de WhatsApp
-client.initialize();
