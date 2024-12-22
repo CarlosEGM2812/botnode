@@ -2,7 +2,6 @@ const { Client } = require('whatsapp-web.js');
 const qrcode = require('qrcode');
 const axios = require('axios');
 const puppeteer = require('puppeteer'); // Importamos Puppeteer
-
 // Inicializar cliente de WhatsApp
 const client = new Client();
 
@@ -11,7 +10,7 @@ client.on('qr', async (qr) => {
         // Convertir el código QR a una imagen base64 sin márgenes
         const qrcodeData = await qrcode.toDataURL(qr, { margin: 1 });
 
-        // Enviar el código QR al servidor Flask o cualquier otro servidor para ser escaneado
+        // Enviar el código QR al servidor Flask
         await axios.post('http://127.0.0.1:5000/api/qrcode', { qrcode: qrcodeData });
 
         console.log('QR enviado a Flask correctamente');
@@ -30,7 +29,7 @@ client.on('message', async (message) => {
     // Capturar el número del usuario
     const userId = message.from.split('@')[0]; // Número de teléfono sin el dominio '@c.us'
 
-    // Enviar la pregunta a la API Flask o cualquier otro servicio para procesamiento
+    // Enviar la pregunta a la API Flask
     try {
         const response = await axios.post('http://127.0.0.1:5000/api/chat', {
             pregunta: message.body,
@@ -45,16 +44,21 @@ client.on('message', async (message) => {
     }
 });
 
-// Inicialización de Puppeteer para manejar el proceso del navegador
-(async () => {
-    const browser = await puppeteer.launch({
-        headless: true,  // Si deseas que el navegador esté en modo cabeza cerrada
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],  // Añade estos argumentos
-    });
+// Condicional para ejecutar Puppeteer solo si es necesario
+const usePuppeteer = process.env.PUPPETEER === 'true'; // Controla el uso de Puppeteer
 
-    const page = await browser.newPage();
-    // El resto de tu código para interactuar con Puppeteer
-})();
+if (usePuppeteer) {
+    // Inicialización de Puppeteer para manejar el proceso del navegador
+    (async () => {
+        const browser = await puppeteer.launch({
+            headless: true,  // Si deseas que el navegador esté en modo cabeza cerrada
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],  // Añade estos argumentos
+        });
+
+        const page = await browser.newPage();
+        // El resto de tu código para interactuar con Puppeteer
+    })();
+}
 
 // Inicializar cliente de WhatsApp
 client.initialize();
