@@ -13,7 +13,7 @@
     "axios": "^1.7.9",
     "qrcode": "^1.5.4",
     "puppeteer-core": "^22.8.2",
-    "whatsapp-web.js": "^1.26.0",
+    "whatsapp-web.js": "^1.26.1",
     "path": "^0.12.7",
     "rimraf": "^4.0.1"
   },
