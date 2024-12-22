@@ -48,16 +48,13 @@ client.on('message', async (message) => {
 
 // Inicialización de Puppeteer para manejar el proceso del navegador
 (async () => {
-    try {
-        const browser = await puppeteer.launch({
-            headless: true, // Modo headless
-            args: ['--no-sandbox', '--disable-setuid-sandbox'] // Opciones para evitar errores de sandbox
-        });
-        
-        console.log('Navegador Puppeteer inicializado con éxito');
-    } catch (error) {
-        console.error('Error al inicializar Puppeteer:', error);
-    }
+  const browser = await puppeteer.launch({
+    headless: true,  // Si deseas que el navegador esté en modo cabeza cerrada
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],  // Añade estos argumentos
+  });
+
+  const page = await browser.newPage();
+  // El resto de tu código para interactuar con Puppeteer
 })();
 
 // Inicializar cliente de WhatsApp
