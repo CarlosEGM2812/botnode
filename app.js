@@ -1,6 +1,7 @@
 const { Client } = require('whatsapp-web.js');
 const qrcode = require('qrcode');
 const axios = require('axios');
+const puppeteer = require('puppeteer'); // Importamos Puppeteer
 const path = require('path');
 
 // Inicializar cliente de WhatsApp
@@ -8,7 +9,7 @@ const client = new Client();
 
 client.on('qr', async (qr) => {
     try {
-        // Convertir el código QR en una imagen base64 sin márgenes
+        // Convertir el código QR a una imagen base64 sin márgenes
         const qrcodeData = await qrcode.toDataURL(qr, { margin: 1 });
 
         // Enviar el código QR al servidor Flask
@@ -44,6 +45,21 @@ client.on('message', async (message) => {
         message.reply('Hubo un error al procesar tu mensaje. Inténtalo nuevamente más tarde.');
     }
 });
+
+// Inicialización de Puppeteer para manejar el proceso del navegador
+(async () => {
+    try {
+        const browser = await puppeteer.launch({
+            headless: true, // Cambiado a true para evitar la interfaz gráfica
+            args: ['--no-sandbox', '--disable-setuid-sandbox'], // Configuración de Puppeteer para evitar errores de sandboxing
+        });
+        
+        // Aquí puedes manejar las instancias de puppeteer si es necesario
+        
+    } catch (error) {
+        console.error('Error al inicializar Puppeteer:', error);
+    }
+})();
 
 // Inicializar cliente de WhatsApp
 client.initialize();
